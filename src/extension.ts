@@ -93,7 +93,7 @@ async function inferLanguageFromPrompt(prompt: string): Promise<string> {
       model: 'llama3-groq-8b-8192-tool-use-preview',
       messages: messages as any,
       temperature: 0.0, // Deterministic response
-      max_tokens: 500,
+      max_tokens: 2500,
     });
     if (response?.choices && response.choices.length > 0) {
       const inferredLanguage = response.choices[0]?.message?.content?.trim().toLowerCase();
@@ -201,7 +201,7 @@ async function generateExplanation(topic: string): Promise<string | null> {
     const messages: any = [
       {
         role: 'system',
-        content: `You are an assistant that generates explanations for programming topics or code snippets. Focus on the topic: "${topic}".
+        content: `You are an assistant that generates explanations for programming topics or code snippets. Focus on the topic: "${topic}" in raw markdown:
                   Your explanation must:
                   1. Be concise but clear.
                   2. Include both a simple and an advanced example.
@@ -223,7 +223,7 @@ async function generateExplanation(topic: string): Promise<string | null> {
       model: 'llama3-groq-8b-8192-tool-use-preview',
       messages: messages,
       temperature: 0.5,
-      max_tokens: 1500,
+      max_tokens: 2500,
       top_p: 1,
       stop: null,
       stream: false,
@@ -256,7 +256,8 @@ async function generateMilestoneContent(language: string, milestoneNumber: numbe
             3. 3–5 test cases, including edge cases.
             Milestone difficulty increases with each milestone number. For example, Milestone 1 should start with 
             basic input handling, and Milestone ${milestoneNumber} should be more difficult, requiring loops, data
-             structures, etc. The difficulty increases with each milestone. Do not at any point include the solution.
+             structures, etc. The difficulty increases with each milestone. Do not at any point include the solution, ONLY the function
+             signature for that particular problem.
             `,
       },
       {
@@ -274,7 +275,7 @@ async function generateMilestoneContent(language: string, milestoneNumber: numbe
       model: 'llama3-groq-8b-8192-tool-use-preview',
       messages: messages,
       temperature: 0.5,
-      max_tokens: 1500,
+      max_tokens: 2500,
       top_p: 1,
       stop: null,
       stream: false,
