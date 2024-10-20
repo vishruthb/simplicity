@@ -11,6 +11,7 @@
     "Other"
   ],
   "activationEvents": [
+    "onView:simplicityView",
     "onCommand:simplicity.generateLearningFile"
   ],
   "main": "./dist/extension.js",

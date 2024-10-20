@@ -5,60 +5,12 @@ import * as fs from 'fs';
 
 let groq: Groq | null = null;
 
-export function activate(context: vscode.ExtensionContext) {
-  console.log('Simplicity extension is now active!');
-
-  // Initialize the GROQ client
-  initializeGroqClient(context);
-
-  // Register the WebviewViewProvider
-  const provider = new SimplicityViewProvider(context);
-  context.subscriptions.push(
-    vscode.window.registerWebviewViewProvider(SimplicityViewProvider.viewType, provider)
-  );
-
-  // Register the command
-  let generateLearningFileCmd = vscode.commands.registerCommand('simplicity.generateLearningFile', async () => {
-    await generateLearningFile();
-  });
-
-  context.subscriptions.push(generateLearningFileCmd);
-}
-
-function initializeGroqClient(context: vscode.ExtensionContext) {
-  const configPath = path.join(context.extensionPath, 'config.json');
-
-  if (!fs.existsSync(configPath)) {
-    vscode.window.showErrorMessage('config.json file not found. Please create a config.json file with your GROQ API key.');
-    return;
-  }
-
-  let config: any;
-  try {
-    const configContent = fs.readFileSync(configPath, 'utf8');
-    config = JSON.parse(configContent);
-  } catch (error) {
-    vscode.window.showErrorMessage('Failed to read config.json. Please ensure it is valid JSON.');
-    return;
-  }
-
-  const groqApiKey = config.groqApiKey;
-  if (!groqApiKey) {
-    vscode.window.showErrorMessage('GROQ API Key is not set in config.json. Please add your API key.');
-    return;
-  }
-
-  groq = new Groq({
-    apiKey: groqApiKey,
-  });
-}
-
 class SimplicityViewProvider implements vscode.WebviewViewProvider {
   public static readonly viewType = 'simplicityView';
   private _view?: vscode.WebviewView;
 
   constructor(private readonly context: vscode.ExtensionContext) {
-    // GROQ client is already initialized globally
+    console.log('SimplicityViewProvider constructor called');
   }
 
   public resolveWebviewView(
@@ -147,11 +99,78 @@ class SimplicityViewProvider implements vscode.WebviewViewProvider {
   }
 }
 
-async function generateLearningFile(language?: string) {
-  if (!groq) {
-    vscode.window.showErrorMessage('GROQ client is not initialized. Please ensure your API key is set in config.json.');
-    return;
+export function activate(context: vscode.ExtensionContext) {
+  console.log('Activating Simplicity extension');
+
+  try {
+    // Initialize the GROQ client
+    initializeGroqClient(context);
+
+    // Register the WebviewViewProvider
+    const provider = new SimplicityViewProvider(context);
+    context.subscriptions.push(
+      vscode.window.registerWebviewViewProvider(
+        SimplicityViewProvider.viewType,
+        provider
+      )
+    );
+
+    // Register the command
+    let generateLearningFileCmd = vscode.commands.registerCommand('simplicity.generateLearningFile', async () => {
+      await generateLearningFile();
+    });
+
+    context.subscriptions.push(generateLearningFileCmd);
+
+    console.log('Simplicity extension activated');
+  } catch (error) {
+    console.error('Error during activation:', error);
   }
+}
+
+function initializeGroqClient(context: vscode.ExtensionContext) {
+  console.log('Initializing GROQ client');
+  // Commenting out GROQ client initialization for testing
+  // const configPath = path.join(context.extensionPath, 'config.json');
+
+  // if (!fs.existsSync(configPath)) {
+  //   vscode.window.showErrorMessage('config.json file not found. Please create a config.json file with your GROQ API key.');
+  //   console.error('config.json not found at', configPath);
+  //   return;
+  // }
+
+  // let config: any;
+  // try {
+  //   const configContent = fs.readFileSync(configPath, 'utf8');
+  //   config = JSON.parse(configContent);
+  // } catch (error) {
+  //   vscode.window.showErrorMessage('Failed to read config.json. Please ensure it is valid JSON.');
+  //   console.error('Failed to parse config.json:', error);
+  //   return;
+  // }
+
+  // const groqApiKey = config.groqApiKey;
+  // if (!groqApiKey) {
+  //   vscode.window.showErrorMessage('GROQ API Key is not set in config.json. Please add your API key.');
+  //   console.error('GROQ API Key not found in config.json');
+  //   return;
+  // }
+
+  // groq = new Groq({
+  //   apiKey: groqApiKey,
+  // });
+
+  // console.log('GROQ client initialized successfully');
+}
+
+async function generateLearningFile(language?: string) {
+  console.log('generateLearningFile called with language:', language);
+
+  // Temporarily bypass GROQ client usage
+  // if (!groq) {
+  //   vscode.window.showErrorMessage('GROQ client is not initialized. Please ensure your API key is set in config.json.');
+  //   return;
+  // }
 
   // If language is not provided, prompt the user
   if (!language) {
@@ -169,12 +188,8 @@ async function generateLearningFile(language?: string) {
     }
   }
 
-  const content = await generateCodeContent(language);
-
-  if (!content) {
-    vscode.window.showErrorMessage('Failed to generate the learning file.');
-    return;
-  }
+  // Simulate content generation
+  const content = `# Learning Plan for ${language}\n\n- Milestone 1: ...\n- Milestone 2: ...\n`;
 
   const doc = await vscode.workspace.openTextDocument({
     content,
