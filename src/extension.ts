@@ -109,15 +109,21 @@ async function generateMilestoneContent(language: string, milestoneNumber: numbe
         const messages: any = [
             {
                 role: 'system',
-                content: `You are an assistant that generates programming milestones (similar to LeetCode questions) in ${language}. Each milestone consists of:
+                content: `You are an assistant that generates programming milestones (similar to LeetCode questions) in
+                order to help users learn the following: ${language}. If a language is not specified, default to Python.
+                Each milestone consists of:
                 1. A brief problem description.
                 2. A single function signature.
                 3. 3–5 test cases, including edge cases.
-                Milestone difficulty increases with each milestone number. For example, Milestone 1 should start with basic input handling, and Milestone ${milestoneNumber} should be more difficult, requiring loops, data structures, etc. The difficulty increases with each milestone.`,
+                Milestone difficulty increases with each milestone number. For example, Milestone 1 should start with 
+                basic input handling, and Milestone ${milestoneNumber} should be more difficult, requiring loops, data
+                 structures, etc. The difficulty increases with each milestone. Do not at any point include the solution.
+                `,
             },
             {
                 role: 'user',
-                content: `Generate milestone ${milestoneNumber} in ${language}. Ensure it starts easy and progressively gets harder, with a clear increase in difficulty tied to the milestone number. Format it with comments.`,
+                content: `Generate milestone ${milestoneNumber} in ${language}. Ensure it starts easy and progressively
+                 gets harder, with a clear increase in difficulty tied to the milestone number. Format it with comments.`,
             },
         ];
 
