@@ -11,7 +11,7 @@
     "Other"
   ],
   "activationEvents": [
-    "onCommand:simplicity.generateLearningFile",
+    "onCommand:simplicity.initLearningPath",
     "onCommand:simplicity.evaluateUserCode"
   ],
   "main": "./dist/extension.js",
@@ -34,8 +34,8 @@
   "contributes": {
     "commands": [
       {
-        "command": "simplicity.generateLearningFile",
-        "title": "Simplicity: Generate Learning File"
+        "command": "simplicity.initLearningPath",
+        "title": "Simplicity: Initialize Learning Path"
       },
       {
         "command": "simplicity.evaluateUserCode",
