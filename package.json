@@ -5,32 +5,15 @@
   "version": "0.0.1",
   "publisher": "your-publisher-name",
   "engines": {
-    "vscode": "^1.60.0"
+    "vscode": "^1.75.0"
   },
   "categories": [
     "Other"
   ],
-  "activationEvents": [
-    "onView:simplicityView",
-    "onCommand:simplicity.generateLearningFile"
-  ],
   "main": "./dist/extension.js",
-  "scripts": {
-    "vscode:prepublish": "npm run package",
-    "compile": "tsc -p ./",
-    "watch": "esbuild.js --watch",
-    "package": "esbuild.js",
-    "test": "npm run compile && node ./out/test/runTest.js"
-  },
-  "devDependencies": {
-    "@types/mocha": "^10.0.9",
-    "@types/node": "^14.17.0",
-    "@types/vscode": "^1.60.0",
-    "esbuild": "^0.12.15",
-    "eslint": "^7.32.0",
-    "mocha": "^10.7.3",
-    "typescript": "^4.4.3"
-  },
+  "activationEvents": [
+    "onView:simplicityView"
+  ],
   "contributes": {
     "viewsContainers": {
       "activitybar": [
@@ -48,18 +31,23 @@
           "name": "Simplicity"
         }
       ]
-    },
-    "commands": [
-      {
-        "command": "simplicity.generateLearningFile",
-        "title": "Simplicity: Generate Learning File"
-      }
-    ]
+    }
   },
-  "dependencies": {
-    "groq-sdk": "^0.7.0",
-    "langdetect-js": "^0.0.3",
-    "pdf-parse": "^1.1.1"
+  "scripts": {
+    "vscode:prepublish": "npm run package",
+    "compile": "tsc -p ./",
+    "watch": "esbuild.js --watch",
+    "package": "esbuild.js",
+    "test": "npm run compile && node ./out/test/runTest.js"
+  },
+  "devDependencies": {
+    "@types/mocha": "^10.0.9",
+    "@types/node": "^14.17.0",
+    "@types/vscode": "^1.75.0",
+    "esbuild": "^0.12.15",
+    "eslint": "^7.32.0",
+    "mocha": "^10.7.3",
+    "typescript": "^4.4.3"
   },
   "webviewContentSecurityPolicy": "default-src 'none'; script-src 'nonce-*'; style-src 'unsafe-inline' vscode-resource:; img-src vscode-resource: https:; connect-src https:;"
 }
