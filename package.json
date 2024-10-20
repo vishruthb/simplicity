@@ -12,7 +12,8 @@
   ],
   "activationEvents": [
     "onCommand:simplicity.initLearningPath",
-    "onCommand:simplicity.evaluateUserCode"
+    "onCommand:simplicity.evaluateUserCode",
+    "onCommand:simplicity.explainTopic"
   ],
   "main": "./dist/extension.js",
   "scripts": {
@@ -40,6 +41,10 @@
       {
         "command": "simplicity.evaluateUserCode",
         "title": "Simplicity: Validate User Code"
+      },
+      {
+        "command": "simplicity.explainTopic",
+        "title": "Simplicity: Explain Topic"
       }
     ]
   },

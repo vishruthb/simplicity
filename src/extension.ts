@@ -45,8 +45,13 @@ export function activate(context: vscode.ExtensionContext) {
     await evaluateUserCode();
   });
 
-  context.subscriptions.push(initLearningPathCmd, evaluateUserCodeCmd);
-}
+  // Register command for explaining a topic
+  let explainTopicCmd = vscode.commands.registerCommand('simplicity.explainTopic', async () => {
+    await explainTopic();
+  });
+
+    context.subscriptions.push(initLearningPathCmd, evaluateUserCodeCmd, explainTopicCmd);
+  }
 
 // Initialize learning path based on user prompt
 async function initializeLearningPath() {
@@ -141,6 +146,98 @@ async function generateMilestone(language: string, milestoneNumber: number, topi
   } catch (error) {
     vscode.window.showErrorMessage('Failed to create or open the playground file.');
     console.error('Error creating or opening file:', error);
+  }
+}
+
+// Explain a topic in Markdown
+async function explainTopic() {
+  const workspaceFolder = vscode.workspace.workspaceFolders?.[0];
+  if (!workspaceFolder) {
+    vscode.window.showErrorMessage('No workspace folder found. Please open a folder in the workspace.');
+    return;
+  }
+
+  // Prompt the user for a topic or code snippet to explain
+  const topicPrompt = await vscode.window.showInputBox({
+    prompt: 'What topic or code would you like to explain?',
+    placeHolder: 'e.g., How does recursion work in Python?',
+    validateInput: (text) => {
+      return text ? null : 'Please enter a topic or code.';
+    },
+  });
+
+  if (!topicPrompt) {
+    vscode.window.showWarningMessage('No input was entered.');
+    return;
+  }
+
+  // Generate the explanation content using Groq
+  const explanationContent = await generateExplanation(topicPrompt);
+  if (!explanationContent) {
+    vscode.window.showErrorMessage('Failed to generate the explanation.');
+    return;
+  }
+
+  const fileName = `${topicPrompt.replace(/\s+/g, '_').toLowerCase()}.md`;
+  const filePath = path.join(workspaceFolder.uri.fsPath, fileName);
+  const fileUri = vscode.Uri.file(filePath);
+
+  try {
+    // Write the explanation content to a Markdown (.md) file
+    await vscode.workspace.fs.writeFile(fileUri, Buffer.from(explanationContent, 'utf8'));
+
+    // Open the Markdown file
+    const document = await vscode.workspace.openTextDocument(fileUri);
+    await vscode.window.showTextDocument(document);
+  } catch (error) {
+    vscode.window.showErrorMessage('Failed to create or open the explanation file.');
+    console.error('Error creating or opening file:', error);
+  }
+}
+
+// Generate explanation content using Groq
+async function generateExplanation(topic: string): Promise<string | null> {
+  try {
+    const messages: any = [
+      {
+        role: 'system',
+        content: `You are an assistant that generates explanations for programming topics or code snippets. Focus on the topic: "${topic}".
+                  Your explanation must:
+                  1. Be concise but clear.
+                  2. Include both a simple and an advanced example.
+                  3. Provide detailed explanations for each example.
+                  Format the explanation as raw markdown without including a solution to the problem.`,
+      },
+      {
+        role: 'user',
+        content: `Explain the topic "${topic}". Include a simple example and an advanced example in raw markdown.`,
+      },
+    ];
+
+    if (!groq) {
+      vscode.window.showErrorMessage('Groq client is not initialized.');
+      return null;
+    }
+
+    const response = await groq.chat.completions.create({
+      model: 'llama3-groq-8b-8192-tool-use-preview',
+      messages: messages,
+      temperature: 0.5,
+      max_tokens: 1500,
+      top_p: 1,
+      stop: null,
+      stream: false,
+    });
+
+    if (response.choices && response.choices.length > 0) {
+      const choice = response.choices?.[0]?.message?.content;
+      return choice ? choice.trim() : null;
+    } else {
+      return null;
+    }
+  } catch (error) {
+    console.error('Error generating explanation:', error);
+    return null;
   }
 }
 
