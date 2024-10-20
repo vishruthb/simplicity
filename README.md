@@ -40,9 +40,11 @@ cd simplicity
 ```
 
 2. Create the `config.json` file:
+```json
 {
   "groqApiKey": "<YOUR_GROQ_API_KEY>"
 }
+```
 
 3. Install dependencies: `npm install`
 
