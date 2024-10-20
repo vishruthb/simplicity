@@ -64,7 +64,7 @@ async function initializeLearningPath() {
   // Prompt for the learning goal or topic in natural language
   const userPrompt = await vscode.window.showInputBox({
     prompt: 'What would you like to learn? Describe your goal.',
-    placeHolder: 'e.g., I want to learn how to build a web scraper.',
+    placeHolder: 'e.g., Learning Data Structures and Algorithms in Python',
     validateInput: (text) => {
       return text ? null : 'Please enter a goal or topic.';
     },

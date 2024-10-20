@@ -24,20 +24,24 @@ Simplicity is an intelligent, project-based learning platform built directly int
 
 ### Prerequisites
 
-Before using Simplicity, ensure you have the following installed:
+Before using Simplicity, ensure you have the following installed and/or set-up:
 
+- Groq API Key*
 - Node.js (v14 or higher)
 - npm
-- Visual Studio Code (v1.60.0 or higher)
 
 ### Configuring the Extension
 
 1. Clone the repository:
 
 ```bash
-https://github.com/vishruthb/simplicity/
+git clone https://github.com/vishruthb/simplicity/
 cd simplicity
 ```
+
+OR
+
+Download the binary .vsix file from releases and install using command palette in VS Code.
 
 2. Create the `config.json` file:
 ```json
@@ -101,3 +105,5 @@ Simplicity is designed as a developer tool for learning new languages or sharpen
 - Command Palette Integration: All interactions are done via the command palette, keeping the workflow simple and IDE-centric.
 - Real-Time Code Evaluation: Once you’ve completed a milestone task, you can immediately test your solution by running the `Simplicity: Validate User Code` command, providing immediate feedback.
 - Markdown Documentation: The `Explain Topic` command generates Markdown files, which are easy to read, edit, and share.
+
+*Integrations for other providers coming soon! :)

@@ -19,15 +19,15 @@
   "scripts": {
     "vscode:prepublish": "npm run package",
     "compile": "tsc -p ./",
-    "watch": "esbuild.js --watch",
-    "package": "esbuild.js",
+    "package": "esbuild src/extension.ts --outdir=dist --bundle --platform=node --external:vscode",
+    "watch": "esbuild src/extension.ts --outfile=dist/extension.js --bundle --watch --platform=node --external:vscode",
     "test": "npm run compile && node ./out/test/runTest.js"
   },
   "devDependencies": {
     "@types/mocha": "^10.0.9",
     "@types/node": "^14.17.0",
     "@types/vscode": "^1.60.0",
-    "esbuild": "^0.12.15",
+    "esbuild": "^0.12.29",
     "eslint": "^7.32.0",
     "mocha": "^10.7.3",
     "typescript": "^4.4.3"
