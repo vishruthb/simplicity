@@ -11,7 +11,8 @@
     "Other"
   ],
   "activationEvents": [
-    "onCommand:simplicity.generateLearningFile"
+    "onCommand:simplicity.generateLearningFile",
+    "onCommand:simplicity.evaluateUserCode"
   ],
   "main": "./dist/extension.js",
   "scripts": {
@@ -35,6 +36,10 @@
       {
         "command": "simplicity.generateLearningFile",
         "title": "Simplicity: Generate Learning File"
+      },
+      {
+        "command": "simplicity.evaluateUserCode",
+        "title": "Simplicity: Validate User Code"
       }
     ]
   },
