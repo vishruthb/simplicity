@@ -31,6 +31,23 @@
     "typescript": "^4.4.3"
   },
   "contributes": {
+    "viewsContainers": {
+      "activitybar": [
+        {
+          "id": "simplicity",
+          "title": "Simplicity",
+          "icon": "resources/icon.png"
+        }
+      ]
+    },
+    "views": {
+      "simplicity": [
+        {
+          "id": "simplicityView",
+          "name": "Simplicity"
+        }
+      ]
+    },
     "commands": [
       {
         "command": "simplicity.generateLearningFile",
@@ -39,6 +56,9 @@
     ]
   },
   "dependencies": {
-    "groq-sdk": "^0.7.0"
-  }
+    "groq-sdk": "^0.7.0",
+    "langdetect-js": "^0.0.3",
+    "pdf-parse": "^1.1.1"
+  },
+  "webviewContentSecurityPolicy": "default-src 'none'; script-src 'nonce-*'; style-src 'unsafe-inline' vscode-resource:; img-src vscode-resource: https:; connect-src https:;"
 }
